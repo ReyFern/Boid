@@ -2,28 +2,41 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
+// TODO: Implement this movement in 3D
 public class BoidMovement : MonoBehaviour
 {
     private Rigidbody rb;
     [SerializeField] private float speed;
-    [SerializeField] public float velocityChangeTime;
-    private float velocityTimer;
+    private Vector3 velocity;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.linearVelocity = new Vector3(Random.Range(0, speed), Random.Range(0, speed), Random.Range(0, speed));
-        velocityTimer = velocityChangeTime;
+        velocity = new Vector3(Random.Range(0, speed), Random.Range(0, speed), 0);
+        rb.linearVelocity = velocity;
+        rb.rotation = Quaternion.Euler(rb.linearVelocity);
     }
 
     // Update is called once per frame
     void Update()
     {
-        velocityTimer -= Time.deltaTime;
-        if (velocityTimer < 0f) {
-            rb.linearVelocity = new Vector3(Random.Range(0, speed), Random.Range(0, speed), Random.Range(0, speed));
-            velocityTimer = velocityChangeTime;
+        
+    }
+
+    public GameObject FindClosestBoid()
+    {
+        GameObject closestBoid = GameObject.FindWithTag("Boid");
+        return closestBoid;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            velocity = Vector3.Reflect(velocity, collision.contacts[0].normal);
+            rb.linearVelocity = velocity;
+            rb.rotation = Quaternion.Euler(rb.linearVelocity);
         }
     }
 }
