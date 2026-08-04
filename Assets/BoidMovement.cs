@@ -30,6 +30,24 @@ public class BoidMovement : MonoBehaviour
         return closestBoid;
     }
 
+    public float DistanceToClosestBoid(GameObject closestBoid)
+    {
+        return Vector3.Distance(gameObject.transform.position, closestBoid.transform.position);
+    }
+
+    public void SteerAwayFromClosestBoid()
+    {
+        GameObject closestBoid = FindClosestBoid();
+        if (closestBoid)
+        {
+            Vector3 position = closestBoid.transform.position;
+            if (DistanceToClosestBoid(closestBoid) <= 20)
+            {
+                //rb.linearVelocity.
+            }
+        }
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Wall"))
