@@ -15,7 +15,7 @@ public class BoidMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         velocity = new Vector3(Random.Range(0, speed), Random.Range(0, speed), 0);
         rb.linearVelocity = velocity;
-        rb.rotation = Quaternion.Euler(rb.linearVelocity);
+        gameObject.transform.rotation = Quaternion.LookRotation(velocity);
     }
 
     // Update is called once per frame
@@ -36,7 +36,7 @@ public class BoidMovement : MonoBehaviour
         {
             velocity = Vector3.Reflect(velocity, collision.contacts[0].normal);
             rb.linearVelocity = velocity;
-            rb.rotation = Quaternion.Euler(rb.linearVelocity);
+            gameObject.transform.rotation = Quaternion.LookRotation(velocity);
         }
     }
 }
